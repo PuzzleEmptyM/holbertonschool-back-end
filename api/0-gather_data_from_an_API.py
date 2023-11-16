@@ -6,6 +6,7 @@ Gather Data From An API Module
 import requests
 import sys
 
+
 def get_user_info(employee_id):
     """
     Retrieve user information from the API.
@@ -17,6 +18,7 @@ def get_user_info(employee_id):
         return response.json()
     else:
         raise requests.RequestException(f"Error: Unable to fetch user data. Status code: {response.status_code}")
+
 
 def get_employee_todo_progress(employee_id):
     """
