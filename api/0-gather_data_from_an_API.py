@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+""" The Gather Data From An API Module """
 import requests
 import sys
 
@@ -30,8 +30,7 @@ def get_employee_todo_progress(employee_id):
                 print(f"\t{task['title']}")
         else:
             # Display an error message if the request was not successful
-            print(f"Error: Unable to fetch data. Status code:
-                  {response.status_code}")
+            print(f"Error: Unable to fetch data. Status code:{response.status_code}")
 
     except requests.ConnectionError:
         # Display an error message for connection issues
