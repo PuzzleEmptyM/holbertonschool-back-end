@@ -60,19 +60,13 @@ def get_employee_todo_progress(employee_id):
         # Handle invalid employee ID
         print("Error: Please provide a valid integer for the employee ID.")
 
-if __name__ == "__main__":
-    """
-    Check if an employee ID is provided as a command-line argument
-    """
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <employee_id>")
-        sys.exit(1)
-
+if __name__ == '__main__':
     try:
-        # Get the employee ID from the command-line argument
         employee_id = int(sys.argv[1])
-
-        # Call the function to get and display employee TODO list progress
         get_employee_todo_progress(employee_id)
-    except ValueError:
-        print("Error: Please provide a valid integer for the employee ID.")
+    except ValueError as e:
+        print(e)
+        exit(1)
+    except Exception as e:
+        print(f'Unexpected error: {e}')
+        exit(1)
