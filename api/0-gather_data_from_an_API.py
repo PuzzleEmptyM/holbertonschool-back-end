@@ -18,9 +18,8 @@ def get_user_info(employee_id):
         return response.json()
     else:
         raise requests.RequestException(
-            f"Error: Unable to fetch user data.
-            Status code: {response.status_code}"
-            )
+            f"""Error: Unable to fetch user data. 
+            Status code: {response.status_code}""")
 
 
 def get_employee_todo_progress(employee_id):
@@ -45,15 +44,17 @@ def get_employee_todo_progress(employee_id):
 
             # Display employee TODO list progress
             print(
-                f"Employee {employee_name} is done with tasks ({len(completed_tasks)}/{len(todos)}):")
+                f"""Employee {employee_name} is done with tasks
+                ({len(completed_tasks)}/{len(todos)}):""")
 
             # Display titles of completed tasks
             for task in completed_tasks:
                 print(f"\t{task['title']}")
         else:
-            # Display an error message if the request for TODO list was not successful
+            # Display error message if the request for TODO list not successful
             print(
-                f"Error: Unable to fetch TODO list data. Status code: {response_todos.status_code}")
+                f"""Error: Unable to fetch TODO list data.
+                Status code: {response_todos.status_code}""")
 
     except requests.RequestException as e:
         # Handle API request exceptions
@@ -62,6 +63,7 @@ def get_employee_todo_progress(employee_id):
     except ValueError:
         # Handle invalid employee ID
         print("Error: Please provide a valid integer for the employee ID.")
+
 
 if __name__ == '__main__':
     try:
