@@ -7,71 +7,29 @@ import requests
 import sys
 
 
-def get_user_info(employee_id):
-    """
-    Retrieve user information from the API.
-    """
-    api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
-    response = requests.get(api_url)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise requests.RequestException(
-            f"""Error: Unable to fetch user data. 
-            Status code: {response.status_code}""")
-
-
 def get_employee_todo_progress(employee_id):
     """
     API endpoint
     """
-    try:
-        # Retrieve user data to get the employee name
-        user_info = get_user_info(employee_id)
-        employee_name = user_info.get('name', f"User {employee_id}")
+    url = "https://jsonplaceholder.typicode.com"
+    employee_url = f"{url}/users/{employee_id}"
+    todo_url = f"{url}/todos"
 
-        # Make a GET request to the API for TODO list
-        api_url_todos = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
-        response_todos = requests.get(api_url_todos)
+    employee_data = requests.get(employee_url).json()
+    todo_data = requests.get(todo_url,
+                             params={"userId": employee_id}).json()
 
-        if response_todos.status_code == 200:
-            # Convert the response to JSON format
-            todos = response_todos.json()
+    employee_name = employee_data.get("name")
+    completed_tasks = [t["title"] for t in todo_data if t["completed"]]
+    number_done = len(completed_tasks)
+    number_total = len(todo_data)
 
-            # Filter completed tasks
-            completed_tasks = [task for task in todos if task['completed']]
-
-            # Display employee TODO list progress
-            print(
-                f"""Employee {employee_name} is done with tasks
-                ({len(completed_tasks)}/{len(todos)}):""")
-
-            # Display titles of completed tasks
-            for task in completed_tasks:
-                print(f"\t{task['title']}")
-        else:
-            # Display error message if the request for TODO list not successful
-            print(
-                f"""Error: Unable to fetch TODO list data.
-                Status code: {response_todos.status_code}""")
-
-    except requests.RequestException as e:
-        # Handle API request exceptions
-        print(f"Error: {e}")
-
-    except ValueError:
-        # Handle invalid employee ID
-        print("Error: Please provide a valid integer for the employee ID.")
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employee_name, number_done, number_total))
+    for task in completed_tasks:
+        print(f"\t {task}")
 
 
-if __name__ == '__main__':
-    try:
-        employee_id = int(sys.argv[1])
-        get_employee_todo_progress(employee_id)
-    except ValueError as e:
-        print(e)
-        exit(1)
-    except Exception as e:
-        print(f'Unexpected error: {e}')
-        exit(1)
+if __name__ == "__main__":
+
+    get_employee_todo_progress(int(sys.argv[1]))
