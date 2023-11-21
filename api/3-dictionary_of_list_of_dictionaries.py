@@ -15,28 +15,31 @@ def get_all_employees_todo_progress():
     users_url = f"{url}/users"
     todos_url = f"{url}/todos"
 
-    all_employees_data = []
+    all_employees_data = {}
 
     users_data = requests.get(users_url).json()
+
+    # Fetch all todos for all users
+    all_todos_data = requests.get(todos_url).json()
 
     for user in users_data:
         employee_id = user.get("id")
         if employee_id is not None:
             employee_name = user["username"]
-            todo_data = requests.get(todos_url,
-                                     params={"userId": employee_id}).json()
 
-            # Check if todos exist for the user
-            if todo_data:
-                tasks = []
-                for task in todo_data:
-                    tasks.append({
-                        "username": employee_name,
-                        "task": task["title"],
-                        "completed": task["completed"]
-                    })
+            # Filter todos for the current user
+            user_todos = [todo for todo in all_todos_data
+                          if todo["userId"] == employee_id]
 
-                all_employees_data.append({str(employee_id): tasks})
+            tasks = []
+            for task in user_todos:
+                tasks.append({
+                    "username": employee_name,
+                    "task": task["title"],
+                    "completed": task["completed"]
+                })
+
+            all_employees_data[str(employee_id)] = tasks
 
     json_file_path = "todo_all_employees.json"
 
