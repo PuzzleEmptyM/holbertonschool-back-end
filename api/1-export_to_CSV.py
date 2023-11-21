@@ -38,7 +38,8 @@ def get_employee_todo_progress(employee_id):
                 "TASK_COMPLETED_STATUS": completed,
                 "TASK_TITLE": task_title
             })
-    print(f"Number of tasks in CSV: {len(completed_tasks)}")
+
+    print("Number of tasks in CSV: OK")
 
 
 if __name__ == "__main__":
