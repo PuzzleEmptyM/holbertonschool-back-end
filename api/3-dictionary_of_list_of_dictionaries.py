@@ -23,19 +23,20 @@ def get_all_employees_todo_progress():
         employee_id = user.get("id")
         if employee_id is not None:
             employee_name = user["username"]
-            
             todo_data = requests.get(todos_url,
                                      params={"userId": employee_id}).json()
 
-            tasks = []
-            for task in todo_data:
-                tasks.append({
-                    "username": employee_name,
-                    "task": task["title"],
-                    "completed": task["completed"]
-                })
+            # Check if todos exist for the user
+            if todo_data:
+                tasks = []
+                for task in todo_data:
+                    tasks.append({
+                        "username": employee_name,
+                        "task": task["title"],
+                        "completed": task["completed"]
+                    })
 
-            all_employees_data.append({str(employee_id): tasks})
+                all_employees_data.append({str(employee_id): tasks})
 
     json_file_path = "todo_all_employees.json"
 
