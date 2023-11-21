@@ -39,8 +39,6 @@ def get_employee_todo_progress(employee_id):
                 "TASK_TITLE": task_title
             })
 
-    print("Number of tasks in CSV: OK")
-
 
 if __name__ == "__main__":
     get_employee_todo_progress(int(sys.argv[1]))
